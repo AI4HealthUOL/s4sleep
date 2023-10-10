@@ -1,0 +1,66 @@
+#epoch encoder with s4 encoder and tf predictor (15 epochs)
+# with epoch encoder features  [128]*2, kernel size[3]*2, stride [2]*2
+defaults:
+  - base: base
+  - data@data0: data_sedf_spec
+  - encoder: ees4
+  - predictor: tf
+  - loss: cef
+  - encoder_static: none
+  - head: mlp
+  - quantizer: none
+  - trainer: trainer
+
+
+base:
+  lr: 0.000363078054770101 # 0.0010964781961431851
+  batch_size: 16
+  fs: 100.
+  metrics: ["f1","macro_auc","accuracy"]
+  aggregate_predictions: false
+  input_channels: 3
+  input_size: 45000
+  normalize: false
+  chunk_length_train: 45000
+
+
+  aggregate_strided_multi_predictions: true
+  stride_valtest: 3000
+
+  train_head_only: false
+  
+trainer:
+  accumulate: 8
+  mainclass: "clinical_ts.cpc_psg.CPCPSG"
+  gpus: 1
+  refresh_rate: 1
+  username: "nstrodt"
+  epochs: 50
+  precision: 32
+
+  export_predictions: true
+
+   # ######################################
+
+loss:
+  weight: []
+  
+encoder:
+  predictor:
+    causal: false
+    #model_dim: 128
+  encoder:
+    features: [128, 128]
+    kernel_sizes: [3, 3]
+    paddings: [1, 1]
+    strides: [2, 2]
+
+
+predictor:
+  causal: false
+  model_dim: 256
+
+head:
+  bias: true
+  mlp: false
+  multi_prediction: true

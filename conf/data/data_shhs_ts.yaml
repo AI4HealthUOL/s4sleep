@@ -1,0 +1,18 @@
+defaults:
+  - base
+
+name: "shhs1"
+path: "../../../dataprepro/shhs/ts"
+fs: 100.
+annotation: true
+fs_annotation: 0.033333333333
+input_channels_filter: [0,1,2,3,4]
+label_filter: [0,1,2,3,4]
+
+col_train_fold: "strat_fold"
+col_val_fold: "strat_fold"
+col_test_fold: "strat_fold"
+
+train_fold_ids: [0]
+val_fold_ids: [1]
+test_fold_ids: [2]

@@ -1,0 +1,63 @@
+# ts
+# 1/5 ees4 encoder and s4 predictor (15 epochs)
+defaults:
+  - base: base
+  - data@data0: data_sedf_ts
+  - encoder: ees4
+  - predictor: s4
+  - loss: cef
+  - encoder_static: none
+  - head: rnn
+  - quantizer: none
+  - trainer: trainer
+
+base:
+  lr: 0.001 # 0.00005
+  batch_size: 8
+  fs: 100.
+  # freq_bins: 129
+  metrics: ["f1","macro_auc","accuracy"]
+  aggregate_predictions: false
+  normalize: false
+  input_channels: 3
+  input_size: 45000
+  chunk_length_train: 45000
+  aggregate_strided_multi_predictions: true
+
+  stride_valtest: 3000
+  
+trainer:
+  accumulate: 8
+  mainclass: "clinical_ts.cpc_psg.CPCPSG"
+  gpus: 1
+  refresh_rate: 1
+  username: "nstrodt"
+  epochs: 50
+  precision: 32
+
+  export_predictions: true
+
+loss:
+  weight: []
+
+encoder:
+  timesteps_per_token: 1
+  epoch_length: 600 # 1/5 epoch length for EpochEncoder###################################
+
+  predictor:
+    causal: false
+  encoder:
+    features: [ 128, 128 ]
+    kernel_sizes: [ 3, 3 ]
+    paddings: [ 1, 1 ]
+    strides: [ 2, 2 ]
+
+
+predictor:
+  causal: false
+
+
+head:
+  multi_prediction: true
+  local_pool_kernel_size: 5 # for RNN head, fs./epoch_length; not for mlp
+

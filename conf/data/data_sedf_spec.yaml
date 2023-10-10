@@ -1,0 +1,9 @@
+defaults:
+  - base
+name: "sedf"
+path: "../../../dataprepro/sedf/spec/"
+fs: 1.
+annotation: true
+fs_annotation: 0.033333
+input_channels_filter: [0,1,2]
+label_filter: [0,1,2,3,4]

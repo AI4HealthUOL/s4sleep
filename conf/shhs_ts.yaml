@@ -1,0 +1,61 @@
+#sub-epoch encoder ts, 0.2 ees4
+defaults:
+  - base: base
+  - data@data0: data_shhs_ts
+  - encoder: ees4
+  - predictor: s4
+  - loss: cef
+  - encoder_static: none
+  - head: rnn
+  - quantizer: none
+  - trainer: trainer
+
+base:
+  batch_size: 16
+  fs: 100.
+  # freq_bins: 129
+  metrics: ["f1","macro_auc","accuracy"]
+  aggregate_predictions: false
+  normalize: false
+  input_channels: 5
+  input_size: 45000
+  chunk_length_train: 45000
+  aggregate_strided_multi_predictions: true
+
+  stride_valtest: 3000
+  
+trainer:
+  accumulate: 16
+  mainclass: "clinical_ts.cpc_psg.CPCPSG"
+  gpus: 1
+  refresh_rate: 1
+  username: "nstrodt"
+  epochs: 15
+  precision: 32
+
+  export_predictions: true
+
+loss:
+  weight: []
+
+encoder:
+  timesteps_per_token: 1
+  epoch_length: 3000 # epoch length for EpochEncoder###################################
+
+  predictor:
+    causal: false
+  encoder:
+    features: [ 128, 128 ]
+    kernel_sizes: [ 3, 3 ]
+    paddings: [ 1, 1 ]
+    strides: [ 2, 2 ]
+
+
+predictor:
+  causal: false
+
+
+head:
+  multi_prediction: true
+  local_pool_kernel_size: 1 # for RNN head, fs./epoch_length; not for mlp
+
