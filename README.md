@@ -1,6 +1,16 @@
 # S4Sleep: Elucidating the design space of deep-learning-based sleep stage classification models
 
-Welcome to the official GitHub repository for the paper "S4Sleep: Elucidating the design space of deep-learning-based sleep stage classification models". If you consider this repository useful for you research, we would appreciate a citation of our preprint. 
+Welcome to the official GitHub repository for the paper "[S4Sleep: Elucidating the design space of deep-learning-based sleep stage classification models](https://arxiv.org/abs/2310.06715)". If you consider this repository useful for you research, we would appreciate a citation of our preprint.
+
+@article{wang2023s4sleep,
+      title={S4Sleep: Elucidating the design space of deep-learning-based sleep stage classification models}, 
+      author={Tiezhi Wang and Nils Strodthoff},
+      year={2023},
+      eprint={2310.06715},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      journal={arXiv preprint 2310.06715}
+} 
 
 ## Table of Contents
 - [Setup & Environment](#setup--environment)
