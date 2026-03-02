@@ -1,0 +1,71 @@
+# Main config for S4Sleep SHHS Time Series input
+# Usage: python main.py --config-name=shhs_ts
+
+defaults:
+  - base: base
+  - data@data0: shhs_ts
+  - ts: tsenc
+  - ts/enc: ees4
+  - ts/pred: s4
+  - ts/head: rnn
+  - static: none
+  - head: none
+  - loss: cef
+  - trainer: trainer
+  - task: psg
+  - metric@metric0: f1
+  - metric@metric1: auroc
+  - metric@metric2: acc
+  - _self_
+
+base:
+  lr: [0.001, 0.001, 0.001]
+  batch_size: 16 # SHHS might be heavier?
+  fs: 100.
+  normalize: false
+  input_channels: 5 # EEG, EEG(sec), EOG(L), EOG(R), EMG -> 5 channels
+  input_size: 45000  # 450 seconds = 15 epochs of 30 seconds
+  chunk_length_train: 45000
+  aggregate_strided_multi_predictions: true
+  stride_valtest: 3000  # 30 seconds = 1 epoch
+  
+trainer:
+  accumulate: 2
+  gpus: 1
+  refresh_rate: 1
+  username: "user"
+  epochs: 1
+  precision: 32
+  seed: 42
+  deterministic: true
+  export_predictions: true
+
+task:
+  mainclass: "clinical_ts.task.psg.PSGModel"
+
+loss:
+  weight: []
+
+ts:
+  enc:
+    pre:
+      epoch_length: 3000  # 30 seconds at 100Hz
+      epoch_stride: 0     # 0 means epoch_stride=epoch_length
+    enc:
+      features: [128, 128]
+      kernel_sizes: [3, 3]
+      paddings: [1, 1]
+      strides: [2, 2]
+      timesteps_per_token: 1
+    pred:
+      causal: false
+      model_dim: 512
+    post:
+      epoch_length: 3000
+      epoch_stride: 0
+  pred:
+    causal: false
+    model_dim: 512
+  head:
+    multi_prediction: true
+    local_pool_kernel_size: 1

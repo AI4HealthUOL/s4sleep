@@ -1,0 +1,68 @@
+# Main config for S4Sleep - Spectrogram input with S4 architecture
+# Usage: python main.py --config-name=sedf_spec
+
+defaults:
+  - base: base
+  - data@data0: sedf_spec
+  - ts: tsenc
+  - ts/enc: eens4
+  - ts/pred: s4
+  - ts/head: rnn
+  - static: none
+  - head: none
+  - loss: cef
+  - trainer: trainer
+  - task: psg
+  - metric@metric0: f1
+  - metric@metric1: auroc
+  - metric@metric2: acc
+  - _self_
+
+base:
+  lr: [0.001, 0.001, 0.001]
+  batch_size: 32
+  fs: 1.
+  freq_bins: 129
+  normalize: false
+  input_channels: 3
+  input_size: 450.
+  chunk_length_train: 450.
+  aggregate_strided_multi_predictions: true
+  stride_valtest: 30
+  
+trainer:
+  accumulate: 2
+  gpus: 1
+  refresh_rate: 1
+  username: "user"
+  epochs: 50
+  precision: 32
+  seed: 42
+  deterministic: true
+  export_predictions: true
+
+task:
+  mainclass: "clinical_ts.task.psg.PSGModel"
+
+loss:
+  weight: []
+
+ts:
+  enc:
+    pre:
+      epoch_length: 30
+      epoch_stride: 0
+    enc:
+      timesteps_per_token: 1
+    pred:
+      causal: false
+      model_dim: 512
+    post:
+      epoch_length: 30
+      epoch_stride: 0
+  pred:
+    causal: false
+    model_dim: 512
+  head:
+    multi_prediction: true
+    local_pool_kernel_size: 1

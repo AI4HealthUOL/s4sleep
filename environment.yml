@@ -1,0 +1,30 @@
+name: s4sleep
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pytorch>=2.0
+  - torchaudio
+  - numpy>=1.21
+  - pandas
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - tqdm
+  - pip
+  - pip:
+    - lightning>=2.0
+    - hydra-core>=1.3
+    - omegaconf
+    - torchmetrics
+    - einops
+    - pykeops
+    - opt-einsum
+    - tensorboard
+    - mne>=1.0
+    - resampy
+    - mlflow
+    - rich

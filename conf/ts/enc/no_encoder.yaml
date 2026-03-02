@@ -1,0 +1,2 @@
+# No Encoder (Identity with get_output_shape)
+_target_: clinical_ts.ts.encoder.NoEncoder
